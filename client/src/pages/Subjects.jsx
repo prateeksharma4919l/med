@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import * as Icons from "lucide-react";
+import { motion } from "framer-motion";
 import { PageTitle, TopicCard } from "../components/UI";
 import { getSubject, subjects, topicBank } from "../data/syllabus";
 import { useApp } from "../context/AppContext";
@@ -22,12 +23,16 @@ export default function Subjects() {
         {subjects.map((subject) => {
           const Icon = Icons[subject.icon] || Icons.BookOpen;
           return (
-            <Link key={subject.id} to={`/subjects/${subject.id}`} className={`rounded-[1.8rem] bg-gradient-to-br ${subject.color} p-6 text-white shadow-glow transition hover:-translate-y-1`}>
-              <Icon size={34} />
+            <motion.div key={subject.id} whileHover={{ y: -9, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link to={`/subjects/${subject.id}`} className={`premium-card animated-gradient block rounded-[1.8rem] bg-gradient-to-br ${subject.color} p-6 text-white shadow-glow transition`}>
+              <div className="pulse-ring grid h-14 w-14 place-items-center rounded-2xl bg-white/18 backdrop-blur">
+                <Icon size={34} />
+              </div>
               <h3 className="mt-5 font-display text-2xl font-extrabold">{subject.name}</h3>
               <p className="mt-2 font-bold text-white/85">{subject.tagline}</p>
               <p className="mt-5 text-sm font-black">{subject.topics.length} topics</p>
-            </Link>
+              </Link>
+            </motion.div>
           );
         })}
       </div>

@@ -2,13 +2,15 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Clock, Star } from "lucide-react";
 
+const spring = { type: "spring", stiffness: 240, damping: 22 };
+
 export function PageTitle({ eyebrow, title, subtitle, action }) {
   return (
-    <motion.section initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+    <motion.section initial={{ opacity: 0, y: 18, filter: "blur(6px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={spring} className="mb-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
           {eyebrow && <p className="mb-2 text-sm font-extrabold uppercase tracking-[0.24em] text-clinic-700 dark:text-cyan-300">{eyebrow}</p>}
-          <h2 className="font-display text-3xl font-extrabold tracking-tight text-clinic-950 dark:text-white sm:text-5xl">{title}</h2>
+          <h2 className="text-balance font-display text-3xl font-extrabold tracking-tight text-clinic-950 dark:text-white sm:text-5xl">{title}</h2>
           {subtitle && <p className="mt-3 max-w-3xl text-base font-semibold text-slate-600 dark:text-slate-300">{subtitle}</p>}
         </div>
         {action}
@@ -19,9 +21,9 @@ export function PageTitle({ eyebrow, title, subtitle, action }) {
 
 export function StatCard({ icon: Icon, label, value, note }) {
   return (
-    <motion.div whileHover={{ y: -4 }} className="glass rounded-[1.7rem] p-5">
+    <motion.div whileHover={{ y: -7, scale: 1.015 }} whileTap={{ scale: 0.985 }} transition={spring} className="glass premium-card rounded-[1.7rem] p-5">
       <div className="mb-5 flex items-center justify-between">
-        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-clinic-950 text-white dark:bg-cyan-300 dark:text-clinic-950">
+        <div className="pulse-ring grid h-12 w-12 place-items-center rounded-2xl bg-clinic-950 text-white dark:bg-cyan-300 dark:text-clinic-950">
           <Icon size={21} />
         </div>
         <Star className="text-amber-400" size={18} />
@@ -35,7 +37,7 @@ export function StatCard({ icon: Icon, label, value, note }) {
 
 export function TopicCard({ topic, completed, bookmarked }) {
   return (
-    <motion.div whileHover={{ y: -4 }} className="glass rounded-[1.6rem] p-5">
+    <motion.div whileHover={{ y: -8, rotateX: 1.5, rotateY: -1.5 }} whileTap={{ scale: 0.985 }} transition={spring} className="glass premium-card rounded-[1.6rem] p-5">
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-clinic-700 dark:text-cyan-300">{topic.subjectName}</p>
@@ -49,7 +51,7 @@ export function TopicCard({ topic, completed, bookmarked }) {
           <Clock size={14} />
           {topic.duration} min
         </span>
-        <Link to={`/topic/${topic.id}`} className="flex items-center gap-1 font-extrabold text-clinic-700 dark:text-cyan-300">
+        <Link to={`/topic/${topic.id}`} className="group flex items-center gap-1 font-extrabold text-clinic-700 dark:text-cyan-300">
           Study <ArrowRight size={16} />
         </Link>
       </div>
@@ -64,9 +66,9 @@ export function Pill({ children }) {
 
 export function SectionCard({ title, children, className = "" }) {
   return (
-    <section className={`glass rounded-[1.7rem] p-5 ${className}`}>
+    <motion.section initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={spring} className={`glass premium-card rounded-[1.7rem] p-5 ${className}`}>
       <h3 className="mb-4 font-display text-xl font-extrabold">{title}</h3>
       {children}
-    </section>
+    </motion.section>
   );
 }

@@ -7,12 +7,18 @@
   color-scheme: light;
   --bg: #f7fbff;
   --ink: #102033;
+  --aqua: rgba(6, 182, 212, 0.28);
+  --blue: rgba(43, 179, 255, 0.24);
+  --mint: rgba(52, 211, 153, 0.18);
 }
 
 .dark {
   color-scheme: dark;
   --bg: #071521;
   --ink: #eaf6ff;
+  --aqua: rgba(6, 182, 212, 0.2);
+  --blue: rgba(43, 179, 255, 0.18);
+  --mint: rgba(52, 211, 153, 0.12);
 }
 
 * {
@@ -28,6 +34,7 @@ body {
     var(--bg);
   color: var(--ink);
   font-family: "Nunito Sans", ui-sans-serif, system-ui;
+  overflow-x: hidden;
 }
 
 button,
@@ -38,10 +45,26 @@ select {
 }
 
 .glass {
+  position: relative;
   background: rgba(255, 255, 255, 0.74);
   border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow: 0 24px 80px rgba(8, 24, 39, 0.08);
   backdrop-filter: blur(18px);
+}
+
+.glass::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), transparent 35%, rgba(43, 179, 255, 0.12));
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.3s ease;
+}
+
+.glass:hover::before {
+  opacity: 1;
 }
 
 .dark .glass {
@@ -57,6 +80,94 @@ select {
   background-size: 34px 34px;
 }
 
+.aurora-field {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  z-index: 0;
+}
+
+.aurora-field span {
+  animation: floaty 14s ease-in-out infinite;
+  border-radius: 999px;
+  filter: blur(34px);
+  opacity: 0.72;
+  position: absolute;
+}
+
+.aurora-field span:nth-child(1) {
+  background: var(--blue);
+  height: 22rem;
+  left: -7rem;
+  top: -5rem;
+  width: 22rem;
+}
+
+.aurora-field span:nth-child(2) {
+  animation-delay: -5s;
+  background: var(--aqua);
+  height: 26rem;
+  right: -10rem;
+  top: 16rem;
+  width: 26rem;
+}
+
+.aurora-field span:nth-child(3) {
+  animation-delay: -9s;
+  background: var(--mint);
+  bottom: -8rem;
+  height: 24rem;
+  left: 34%;
+  width: 24rem;
+}
+
+.premium-card {
+  isolation: isolate;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.premium-card::after {
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  content: "";
+  height: 160%;
+  left: -140%;
+  position: absolute;
+  top: -30%;
+  transform: rotate(8deg);
+  transition: left 0.72s ease;
+  width: 70%;
+  z-index: -1;
+}
+
+.premium-card:hover::after {
+  left: 130%;
+}
+
+.animated-gradient {
+  animation: gradientShift 9s ease infinite;
+  background-size: 180% 180%;
+}
+
+.pulse-ring {
+  position: relative;
+}
+
+.pulse-ring::after {
+  animation: pulseRing 2.3s ease-out infinite;
+  border: 1px solid currentColor;
+  border-radius: inherit;
+  content: "";
+  inset: -5px;
+  opacity: 0.45;
+  position: absolute;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
 .smooth-scroll {
   scroll-behavior: smooth;
 }
@@ -68,4 +179,49 @@ select {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  45% {
+    transform: translate3d(46px, 32px, 0) scale(1.08);
+  }
+  70% {
+    transform: translate3d(-28px, 54px, 0) scale(0.95);
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
