@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
+import path from "path";
+import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.routes.js";
 import topicRoutes from "./routes/topic.routes.js";
 import progressRoutes from "./routes/progress.routes.js";
@@ -11,6 +13,9 @@ import adminRoutes from "./routes/admin.routes.js";
 import { errorHandler } from "./middleware/error.js";
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const clientDistPath = path.resolve(__dirname, "../../client/dist");
 const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim());
@@ -35,6 +40,12 @@ app.use("/api/topics", topicRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/admin", adminRoutes);
+
+app.use(express.static(clientDistPath));
+app.get("*", (req, res, next) => {
+  if (req.path.startsWith("/api")) return next();
+  return res.sendFile(path.join(clientDistPath, "index.html"));
+});
 
 app.use(errorHandler);
 
