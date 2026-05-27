@@ -15,6 +15,46 @@
         </div>
       </div>
     </div>
+    <script>
+      window.addEventListener("error", function (event) {
+        window.__MEDEASE_ERROR__ = event.message;
+      });
+
+      setTimeout(function () {
+        var root = document.getElementById("root");
+        if (!root || window.__MEDEASE_READY__) return;
+
+        root.innerHTML = `
+          <main style="min-height:100vh;background:radial-gradient(circle at top left,#dff7ff,transparent 38rem),linear-gradient(135deg,#f7fbff,#e8f8ff);font-family:Arial,sans-serif;color:#081827;padding:22px">
+            <section style="max-width:1120px;margin:0 auto">
+              <div style="background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.9);box-shadow:0 24px 80px rgba(8,24,39,.12);border-radius:32px;padding:28px;margin-bottom:18px">
+                <p style="display:inline-block;background:#cffafe;color:#0878c7;border-radius:999px;padding:10px 14px;font-weight:800;margin:0 0 14px">AI-powered MBBS 2nd Year Study Platform</p>
+                <h1 style="font-size:clamp(38px,7vw,72px);line-height:1;margin:0 0 16px;font-weight:900">MedEase AI</h1>
+                <p style="font-size:20px;line-height:1.55;max-width:820px;margin:0 0 24px;color:#44546a;font-weight:700">Study Pathology, Pharmacology and Microbiology with notes, MCQs, viva questions, mnemonics, PYQs, flashcards, revision tools and AI-style explanations.</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                  <a href="#subjects" style="background:#081827;color:white;text-decoration:none;border-radius:18px;padding:14px 20px;font-weight:900">Start Studying</a>
+                  <a href="#revision" style="background:white;color:#0878c7;text-decoration:none;border-radius:18px;padding:14px 20px;font-weight:900">Quick Revision</a>
+                </div>
+              </div>
+
+              <div id="subjects" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-bottom:18px">
+                ${["Pathology|Cell Injury, Necrosis, Inflammation, Neoplasia, Anemia", "Pharmacology|Drug classifications, MOA, Uses, Side effects, MCQs", "Microbiology|Bacteria, Viruses, Fungi, Parasites, Lab diagnosis"].map(function (item) {
+                  var parts = item.split("|");
+                  return `<article style="background:white;border-radius:26px;padding:22px;box-shadow:0 18px 55px rgba(8,24,39,.1)"><h2 style="margin:0 0 10px;font-size:26px">${parts[0]}</h2><p style="margin:0;color:#526070;font-weight:700;line-height:1.5">${parts[1]}</p></article>`;
+                }).join("")}
+              </div>
+
+              <div id="revision" style="background:#081827;color:white;border-radius:30px;padding:24px">
+                <h2 style="margin:0 0 12px;font-size:30px">Demo Login</h2>
+                <p style="margin:0 0 8px;font-weight:800">Username: doctor gouri sharma</p>
+                <p style="margin:0 0 18px;font-weight:800">Password: 1234</p>
+                <p style="margin:0;color:#c8f6ff;font-weight:700">If you are seeing this fallback, the main React bundle was blocked by the browser/cache. Hard refresh with Ctrl + Shift + R or open in incognito.</p>
+              </div>
+            </section>
+          </main>
+        `;
+      }, 2000);
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
