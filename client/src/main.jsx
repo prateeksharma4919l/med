@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import StableApp from "./StableApp.jsx";
+import { HashRouter } from "react-router-dom";
+import App from "./App.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import "./styles.css";
 
@@ -12,7 +13,9 @@ function bootMedEase() {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <ErrorBoundary>
-        <StableApp />
+        <HashRouter>
+          <App />
+        </HashRouter>
       </ErrorBoundary>
     </React.StrictMode>
   );
