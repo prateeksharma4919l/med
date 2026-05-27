@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import * as Icons from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from "../motion.jsx";
 import { PageTitle, TopicCard } from "../components/UI";
 import { getSubject, subjects, topicBank } from "../data/syllabus";
 import { useApp } from "../context/AppContext";

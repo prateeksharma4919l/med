@@ -20,7 +20,7 @@ import {
   X
 } from "lucide-react";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "../motion.jsx";
 import { useApp } from "../context/AppContext";
 import { topicBank } from "../data/syllabus";
 

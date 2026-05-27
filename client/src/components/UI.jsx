@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion } from "../motion.jsx";
 import { ArrowRight, CheckCircle2, Clock, Star } from "lucide-react";
 
 const spring = { type: "spring", stiffness: 240, damping: 22 };

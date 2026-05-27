@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion } from "../motion.jsx";
 import { Bot, BookOpen, Brain, CalendarCheck, Clock3, Flame, Layers, Trophy } from "lucide-react";
 import { PageTitle, StatCard, TopicCard } from "../components/UI";
 import { subjects, topicBank } from "../data/syllabus";
