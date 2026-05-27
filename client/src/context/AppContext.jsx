@@ -3,14 +3,23 @@ import api from "../api";
 
 const AppContext = createContext(null);
 
+function readJson(key, fallback) {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : fallback;
+  } catch {
+    localStorage.removeItem(key);
+    return fallback;
+  }
+}
+
 export function AppProvider({ children }) {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("medease_theme") === "dark");
   const [user, setUser] = useState(() => {
-    const stored = localStorage.getItem("medease_user");
-    return stored ? JSON.parse(stored) : null;
+    return readJson("medease_user", null);
   });
-  const [bookmarks, setBookmarks] = useState(() => JSON.parse(localStorage.getItem("medease_bookmarks") || "[]"));
-  const [completed, setCompleted] = useState(() => JSON.parse(localStorage.getItem("medease_completed") || "[]"));
+  const [bookmarks, setBookmarks] = useState(() => readJson("medease_bookmarks", []));
+  const [completed, setCompleted] = useState(() => readJson("medease_completed", []));
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);

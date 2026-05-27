@@ -37,6 +37,27 @@ const nav = [
   { to: "/profile", label: "Profile", icon: User }
 ];
 
+function SidebarLink({ to, label, icon: Icon, onClick, delay = 0 }) {
+  return (
+    <NavLink
+      to={to}
+      onClick={onClick}
+      className={({ isActive }) =>
+        `group relative flex items-center gap-3 overflow-hidden rounded-2xl px-4 py-3 text-sm font-extrabold transition duration-300 ${
+          isActive
+            ? "bg-clinic-950 text-white shadow-glow dark:bg-cyan-400 dark:text-clinic-950"
+            : "text-slate-600 hover:bg-white hover:text-clinic-700 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+        }`
+      }
+    >
+      <motion.span initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay }} className="flex items-center gap-3">
+        <Icon size={18} />
+        {label}
+      </motion.span>
+    </NavLink>
+  );
+}
+
 export default function Layout() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -61,28 +82,14 @@ export default function Layout() {
 
       <nav className="flex flex-1 flex-col gap-1">
         {nav.map(({ to, label, icon: Icon }, index) => (
-          <NavLink
+          <SidebarLink
             key={to}
             to={to}
+            label={label}
+            icon={Icon}
             onClick={() => setOpen(false)}
-            className={({ isActive }) =>
-              `group relative flex items-center gap-3 overflow-hidden rounded-2xl px-4 py-3 text-sm font-extrabold transition duration-300 ${
-                isActive
-                  ? "bg-clinic-950 text-white shadow-glow dark:bg-cyan-400 dark:text-clinic-950"
-                  : "text-slate-600 hover:bg-white hover:text-clinic-700 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                {isActive && <motion.span layoutId="activeNav" className="absolute inset-0 -z-10 rounded-2xl bg-clinic-950 dark:bg-cyan-400" transition={{ type: "spring", stiffness: 320, damping: 28 }} />}
-                <motion.span initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.025 }} className="flex items-center gap-3">
-                  <Icon size={18} />
-                  {label}
-                </motion.span>
-              </>
-            )}
-          </NavLink>
+            delay={index * 0.025}
+          />
         ))}
       </nav>
 
