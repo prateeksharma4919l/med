@@ -5,7 +5,7 @@ import { useApp } from "../context/AppContext";
 
 export default function Auth() {
   const [mode, setMode] = useState("login");
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", identifier: "doctor gouri sharma", email: "", password: "1234" });
   const [error, setError] = useState("");
   const { login, register } = useApp();
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function Auth() {
     event.preventDefault();
     setError("");
     try {
-      if (mode === "login") await login(form.email, form.password);
+      if (mode === "login") await login(form.identifier, form.password);
       else await register(form);
       navigate("/profile");
     } catch (err) {
@@ -30,13 +30,17 @@ export default function Auth() {
             <Sparkles />
           </div>
           <h1 className="font-display text-3xl font-extrabold">MedEase AI</h1>
-          <p className="font-semibold text-slate-500">Login or create your MBBS study account.</p>
+          <p className="font-semibold text-slate-500">Demo login: doctor gouri sharma / 1234</p>
         </div>
         <form onSubmit={submit} className="space-y-4">
           {mode === "register" && (
             <input placeholder="Full name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="w-full rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" />
           )}
-          <input type="email" placeholder="Email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} className="w-full rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" />
+          {mode === "login" ? (
+            <input placeholder="Username or email" value={form.identifier} onChange={(event) => setForm({ ...form, identifier: event.target.value })} className="w-full rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" />
+          ) : (
+            <input type="email" placeholder="Email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} className="w-full rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" />
+          )}
           <input type="password" placeholder="Password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} className="w-full rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" />
           {error && <p className="font-bold text-rose-600">{error}</p>}
           <button className="w-full rounded-2xl bg-clinic-950 px-5 py-4 font-black text-white shadow-glow dark:bg-cyan-300 dark:text-clinic-950">

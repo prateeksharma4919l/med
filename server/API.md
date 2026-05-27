@@ -47,3 +47,10 @@ Seed admin:
 admin@medease.ai
 admin123
 ```
+
+Demo student:
+
+```txt
+doctor gouri sharma
+1234
+```

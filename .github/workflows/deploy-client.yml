@@ -36,6 +36,8 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: client
+        env:
+          VITE_BASE_PATH: /med/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

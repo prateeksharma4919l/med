@@ -22,8 +22,24 @@ async function seed() {
   );
   await Progress.findOneAndUpdate({ user: admin._id }, {}, { upsert: true });
 
+  const demoPassword = await bcrypt.hash("1234", 12);
+  const demo = await User.findOneAndUpdate(
+    { username: "doctor gouri sharma" },
+    {
+      name: "Doctor Gouri Sharma",
+      username: "doctor gouri sharma",
+      email: "doctor.gouri.sharma@medease.ai",
+      password: demoPassword,
+      role: "student",
+      streak: 7
+    },
+    { upsert: true, new: true }
+  );
+  await Progress.findOneAndUpdate({ user: demo._id }, {}, { upsert: true });
+
   console.log(`Seeded ${seedTopics.length} topics`);
   console.log("Admin login: admin@medease.ai / admin123");
+  console.log("Demo student login: doctor gouri sharma / 1234");
   process.exit(0);
 }
 

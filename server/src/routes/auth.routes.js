@@ -11,12 +11,13 @@ const router = express.Router();
 const registerSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  password: z.string().min(6)
+  username: z.string().min(2).optional(),
+  password: z.string().min(4)
 });
 
 const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6)
+  identifier: z.string().min(2),
+  password: z.string().min(4)
 });
 
 function signToken(user) {
@@ -24,17 +25,22 @@ function signToken(user) {
 }
 
 function publicUser(user) {
-  return { id: user._id, name: user.name, email: user.email, role: user.role, streak: user.streak, examDate: user.examDate };
+  return { id: user._id, name: user.name, username: user.username, email: user.email, role: user.role, streak: user.streak, examDate: user.examDate };
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 router.post("/register", async (req, res, next) => {
   try {
     const payload = registerSchema.parse(req.body);
-    const exists = await User.findOne({ email: payload.email });
-    if (exists) return res.status(409).json({ message: "Email already registered" });
+    const username = payload.username || payload.name.toLowerCase();
+    const exists = await User.findOne({ $or: [{ email: payload.email }, { username }] });
+    if (exists) return res.status(409).json({ message: "Email or username already registered" });
 
     const password = await bcrypt.hash(payload.password, 12);
-    const user = await User.create({ ...payload, password });
+    const user = await User.create({ ...payload, username, password });
     await Progress.create({ user: user._id });
 
     res.status(201).json({ token: signToken(user), user: publicUser(user) });
@@ -46,7 +52,10 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const payload = loginSchema.parse(req.body);
-    const user = await User.findOne({ email: payload.email });
+    const identifier = payload.identifier.trim().toLowerCase();
+    const user = await User.findOne({
+      $or: [{ email: identifier }, { username: identifier }, { name: new RegExp(`^${escapeRegex(identifier)}$`, "i") }]
+    });
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
     const valid = await bcrypt.compare(payload.password, user.password);

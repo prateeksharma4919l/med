@@ -56,6 +56,25 @@ If no key is provided, the backend returns helpful demo AI responses so the app 
 
 ## Deployment
 
+### Render
+
+1. Push this repo to GitHub.
+2. Open Render and choose `New > Blueprint`.
+3. Select this repo. Render will read `render.yaml`.
+4. Add required backend env vars: `MONGODB_URI`, `JWT_SECRET`, and optionally `OPENAI_API_KEY`.
+5. Deploy both services.
+
+Frontend URL: `https://medease-ai.onrender.com`
+
+Backend URL: `https://medease-ai-api.onrender.com/api`
+
+Demo login:
+
+```txt
+doctor gouri sharma
+1234
+```
+
 ### Frontend
 
 Deploy `client` to Vercel or Netlify.
