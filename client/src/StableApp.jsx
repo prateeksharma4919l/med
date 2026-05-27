@@ -45,6 +45,8 @@ const demoUser = {
   password: "1234"
 };
 
+const appVersion = "live-premium-2026-05-28";
+
 function Card({ children, className = "" }) {
   return <div className={`glass premium-card rounded-[1.7rem] p-5 ${className}`}>{children}</div>;
 }
@@ -106,6 +108,7 @@ function HomePage({ setPage, completed, openTopic }) {
             <p className="mt-4 max-w-3xl text-lg font-semibold text-slate-600 dark:text-slate-300">
               Notes, exam points, mnemonics, MCQs, viva questions, diagrams, PYQs, flashcards, planner, and AI-style explanations in one premium dashboard.
             </p>
+            <p className="mt-3 text-xs font-black uppercase tracking-[0.2em] text-clinic-700 dark:text-cyan-300">{appVersion}</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button onClick={() => setPage("subjects")}>Start Studying</Button>
               <Button onClick={() => setPage("ai")} variant="light">Ask AI Doubt</Button>

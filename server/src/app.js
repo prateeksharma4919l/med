@@ -46,7 +46,17 @@ app.use("/api/progress", progressRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.use(express.static(clientDistPath));
+app.use(
+  express.static(clientDistPath, {
+    etag: false,
+    lastModified: false,
+    setHeaders(res) {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+    }
+  })
+);
 app.get("*", (req, res, next) => {
   if (req.path.startsWith("/api")) return next();
   return res.sendFile(path.join(clientDistPath, "index.html"));
