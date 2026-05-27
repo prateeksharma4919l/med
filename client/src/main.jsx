@@ -1,22 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { HashRouter } from "react-router-dom";
-import App from "./App.jsx";
+import StableApp from "./StableApp.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import "./styles.css";
 
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
-  window.__MEDEASE_READY__ = true;
-  rootElement.dataset.medeaseReady = "true";
-
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <ErrorBoundary>
-        <HashRouter>
-          <App />
-        </HashRouter>
+        <StableApp />
       </ErrorBoundary>
     </React.StrictMode>
   );
