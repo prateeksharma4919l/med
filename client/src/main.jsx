@@ -4,9 +4,11 @@ import StableApp from "./StableApp.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import "./styles.css";
 
-const rootElement = document.getElementById("root");
+function bootMedEase() {
+  const rootElement = document.getElementById("root");
+  if (!rootElement || rootElement.dataset.medeaseBooted === "true") return;
 
-if (rootElement) {
+  rootElement.dataset.medeaseBooted = "true";
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <ErrorBoundary>
@@ -14,4 +16,10 @@ if (rootElement) {
       </ErrorBoundary>
     </React.StrictMode>
   );
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootMedEase);
+} else {
+  bootMedEase();
 }
