@@ -2,6 +2,14 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import api from "../api";
 
 const AppContext = createContext(null);
+const demoUser = {
+  id: "demo-doctor-gouri-sharma",
+  name: "Doctor Gouri Sharma",
+  username: "doctor gouri sharma",
+  email: "doctor.gouri.sharma@medease.ai",
+  role: "student",
+  streak: 7
+};
 
 function readJson(key, fallback) {
   try {
@@ -16,7 +24,7 @@ function readJson(key, fallback) {
 export function AppProvider({ children }) {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("medease_theme") === "dark");
   const [user, setUser] = useState(() => {
-    return readJson("medease_user", null);
+    return readJson("medease_user", demoUser);
   });
   const [bookmarks, setBookmarks] = useState(() => readJson("medease_bookmarks", []));
   const [completed, setCompleted] = useState(() => readJson("medease_completed", []));
@@ -37,14 +45,6 @@ export function AppProvider({ children }) {
   const login = async (identifier, password) => {
     const normalizedIdentifier = identifier.trim().toLowerCase();
     if (normalizedIdentifier === "doctor gouri sharma" && password === "1234") {
-      const demoUser = {
-        id: "demo-doctor-gouri-sharma",
-        name: "Doctor Gouri Sharma",
-        username: "doctor gouri sharma",
-        email: "doctor.gouri.sharma@medease.ai",
-        role: "student",
-        streak: 7
-      };
       localStorage.setItem("medease_token", "demo-local-token");
       localStorage.setItem("medease_user", JSON.stringify(demoUser));
       setUser(demoUser);
@@ -69,7 +69,7 @@ export function AppProvider({ children }) {
   const logout = () => {
     localStorage.removeItem("medease_token");
     localStorage.removeItem("medease_user");
-    setUser(null);
+    setUser(demoUser);
   };
 
   const toggleBookmark = (topicId) => {

@@ -12,13 +12,11 @@ import Flashcards from "./pages/Flashcards";
 import ProgressTracker from "./pages/ProgressTracker";
 import StudyPlanner from "./pages/StudyPlanner";
 import Profile from "./pages/Profile";
-import Auth from "./pages/Auth";
 
 export default function App() {
   return (
     <AppProvider>
       <Routes>
-        <Route path="/login" element={<Auth />} />
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/subjects" element={<Subjects />} />
@@ -32,6 +30,7 @@ export default function App() {
           <Route path="/progress" element={<ProgressTracker />} />
           <Route path="/planner" element={<StudyPlanner />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Profile />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
