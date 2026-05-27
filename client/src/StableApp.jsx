@@ -27,10 +27,12 @@ const navItems = [
   { id: "ai", label: "AI Chat", icon: Bot },
   { id: "mcq", label: "MCQs", icon: ClipboardList },
   { id: "revision", label: "Revision", icon: BookOpen },
+  { id: "pyq", label: "PYQ", icon: BookOpen },
   { id: "flashcards", label: "Flashcards", icon: Brain },
   { id: "progress", label: "Progress", icon: Trophy },
   { id: "planner", label: "Planner", icon: CalendarDays },
-  { id: "profile", label: "Profile", icon: User }
+  { id: "profile", label: "Profile", icon: User },
+  { id: "login", label: "Login / Register", icon: User }
 ];
 
 const subjectIcons = {
@@ -96,13 +98,13 @@ function HomePage({ setPage, completed, openTopic }) {
   const featured = topicBank.slice(0, 6);
   return (
     <div className="space-y-6">
-      <section className="glass premium-card overflow-hidden rounded-[2rem] p-6 sm:p-8">
+      <section className="glass premium-card overflow-hidden rounded-[2rem] p-6 sm:p-10">
         <div className="grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-center">
           <div>
             <p className="mb-3 inline-flex rounded-full bg-cyan-100 px-4 py-2 text-sm font-black text-clinic-700 dark:bg-white/10 dark:text-cyan-200">
               AI-powered MBBS 2nd Year study cockpit
             </p>
-            <h1 className="text-balance font-display text-4xl font-extrabold tracking-tight text-clinic-950 dark:text-white sm:text-6xl">
+            <h1 className="text-balance font-display text-5xl font-extrabold tracking-tight text-clinic-950 dark:text-white sm:text-7xl">
               Study Pathology, Pharmacology and Microbiology without getting lost.
             </h1>
             <p className="mt-4 max-w-3xl text-lg font-semibold text-slate-600 dark:text-slate-300">
@@ -234,17 +236,39 @@ function ToolsPage({ page, topics }) {
   const titleMap = {
     mcq: "MCQ Practice",
     revision: "Revision Notes",
+    pyq: "Previous Year Questions",
     flashcards: "Flashcards",
     progress: "Progress Tracker",
     planner: "Daily Study Planner",
-    profile: "Profile"
+    profile: "Profile",
+    login: "Login / Register"
   };
   return (
     <div className="space-y-5">
       <SectionTitle eyebrow="Study Tool" title={titleMap[page]} subtitle="Fast, mobile-friendly tools for MBBS 2nd year revision." />
+      {page === "login" && (
+        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+          <Card>
+            <h3 className="font-display text-2xl font-extrabold">Student Login</h3>
+            <p className="mt-2 font-bold text-slate-600 dark:text-slate-300">Demo account is ready for now.</p>
+            <input className="mt-5 w-full rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" value={demoUser.username} readOnly />
+            <input className="mt-3 w-full rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" value={demoUser.password} readOnly />
+            <Button onClick={() => alert("Logged in as Doctor Gouri Sharma")} >Login</Button>
+          </Card>
+          <Card>
+            <h3 className="font-display text-2xl font-extrabold">Create Account</h3>
+            <p className="mt-2 font-bold text-slate-600 dark:text-slate-300">Register UI is ready. Backend MongoDB can be connected from Render env.</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <input className="rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" placeholder="Full name" />
+              <input className="rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10" placeholder="Email" />
+              <input className="rounded-2xl bg-white p-4 font-bold outline-none ring-1 ring-slate-100 dark:bg-white/10 dark:ring-white/10 sm:col-span-2" placeholder="Password" />
+            </div>
+          </Card>
+        </div>
+      )}
       {page === "profile" && <Card><h3 className="font-display text-2xl font-extrabold">{demoUser.name}</h3><p className="mt-2 font-bold text-slate-600 dark:text-slate-300">Username: {demoUser.username}</p><p className="font-bold text-slate-600 dark:text-slate-300">Password: {demoUser.password}</p></Card>}
       {page === "progress" && <div className="grid gap-4 md:grid-cols-3"><Card><p className="text-3xl font-black">7</p><p className="font-bold">Daily streak</p></Card><Card><p className="text-3xl font-black">{topics.length}</p><p className="font-bold">Topics available</p></Card><Card><p className="text-3xl font-black">Exam Ready</p><p className="font-bold">Mode active</p></Card></div>}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {page !== "login" && <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {topics.slice(0, 12).map((topic) => (
           <Card key={topic.id}>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-clinic-700 dark:text-cyan-300">{topic.subjectName}</p>
@@ -253,7 +277,7 @@ function ToolsPage({ page, topics }) {
             <p className="mt-3 font-black text-clinic-700 dark:text-cyan-300">{topic.mnemonics[0]}</p>
           </Card>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }
@@ -261,7 +285,7 @@ function ToolsPage({ page, topics }) {
 export default function StableApp() {
   const [page, setPage] = useState("home");
   const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [query, setQuery] = useState("");
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [completed, setCompleted] = useState([]);
@@ -306,12 +330,15 @@ export default function StableApp() {
         <div><h1 className="font-display text-xl font-extrabold">MedEase AI</h1><p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">MBBS Year 2</p></div>
       </div>
       <nav className="flex flex-1 flex-col gap-1">
-        {navItems.map(({ id, label, icon: Icon }) => (
+        {navItems.filter((item) => item.id !== "login").map(({ id, label, icon: Icon }) => (
           <button key={id} onClick={() => { setPage(id); setOpen(false); }} className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-extrabold transition ${page === id ? "bg-clinic-950 text-white shadow-glow dark:bg-cyan-400 dark:text-clinic-950" : "text-slate-600 hover:bg-white hover:text-clinic-700 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"}`}>
             <Icon size={18} /> {label}
           </button>
         ))}
       </nav>
+      <button onClick={() => { setPage("login"); setOpen(false); }} className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-left text-sm font-extrabold text-clinic-700 shadow-sm transition hover:-translate-y-1 dark:bg-white/10 dark:text-cyan-200">
+        <User size={18} /> Login / Register
+      </button>
     </aside>
   );
 
