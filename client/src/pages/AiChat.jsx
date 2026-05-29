@@ -12,6 +12,17 @@ export default function AiChat() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState("Exam Mode");
+
+  const modes = [
+    "Explain Simpler",
+    "Explain in Detail",
+    "Exam Mode",
+    "Quick Revision",
+    "Generate MCQs",
+    "Generate Viva",
+    "Mnemonics"
+  ];
 
   useEffect(() => {
     if (topic) setInput(`Explain ${topic} in easy English with exam points, viva questions, mnemonics and a flowchart.`);
@@ -19,7 +30,7 @@ export default function AiChat() {
 
   const send = async () => {
     if (!input.trim()) return;
-    const prompt = input.trim();
+    const prompt = `[${mode}] ${input.trim()}`;
     setMessages((items) => [...items, { role: "user", content: prompt }]);
     setInput("");
     setLoading(true);
@@ -35,15 +46,30 @@ export default function AiChat() {
 
   return (
     <div className="space-y-5 pb-10">
-      <PageTitle eyebrow="Doubt Solver" title="AI Chat Assistant" subtitle="Ask for explanations, short notes, MCQs, mnemonics, viva questions, flowcharts, and study plans." />
+      <PageTitle eyebrow="Doubt Solver" title="AI Chat Assistant" subtitle="Choose a study mode and ask for simple explanations, details, MCQs, viva, mnemonics, flowcharts or revision notes." />
       <div className="glass flex min-h-[68vh] flex-col rounded-[2rem] p-4">
+        <div className="mb-4 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+          {modes.map((item) => (
+            <button
+              key={item}
+              onClick={() => setMode(item)}
+              className={`shrink-0 rounded-full px-4 py-2 text-sm font-black transition ${
+                mode === item
+                  ? "bg-clinic-950 text-white shadow-glow dark:bg-cyan-300 dark:text-clinic-950"
+                  : "bg-white text-slate-600 hover:text-clinic-700 dark:bg-white/10 dark:text-slate-300"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
         <div className="flex-1 space-y-4 overflow-y-auto p-2">
           {messages.map((message, index) => (
             <div key={`${message.role}-${index}`} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[88%] rounded-[1.4rem] p-4 font-semibold shadow-sm ${message.role === "user" ? "bg-clinic-950 text-white dark:bg-cyan-300 dark:text-clinic-950" : "bg-white dark:bg-white/10"}`}>
                 <div className="mb-2 flex items-center gap-2 text-sm font-black">
                   {message.role === "user" ? <Sparkles size={16} /> : <Bot size={16} />}
-                  {message.role === "user" ? "You" : "MedEase AI"}
+                  {message.role === "user" ? "You" : `MedEase AI - ${mode}`}
                 </div>
                 <p className="whitespace-pre-wrap">{message.content}</p>
               </div>
@@ -61,7 +87,7 @@ export default function AiChat() {
                 send();
               }
             }}
-            placeholder="Ask: Generate MCQs on anemia, explain beta blockers, create microbiology viva..."
+            placeholder={`Current mode: ${mode}. Ask: anemia, beta blockers, HIV lab diagnosis...`}
             className="min-h-16 flex-1 resize-none rounded-2xl border-0 bg-white p-4 font-bold outline-none ring-1 ring-slate-100 focus:ring-clinic-500 dark:bg-white/10 dark:ring-white/10"
           />
           <button onClick={send} className="rounded-2xl bg-clinic-950 px-5 text-white dark:bg-cyan-300 dark:text-clinic-950">

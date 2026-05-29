@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Bookmark, CheckCircle2, Download, Sparkles } from "lucide-react";
+import { Bookmark, CheckCircle2, Download, Lightbulb, Sparkles, Stethoscope } from "lucide-react";
 import { PageTitle, Pill, SectionCard } from "../components/UI";
 import { getTopic } from "../data/syllabus";
 import { useApp } from "../context/AppContext";
@@ -36,12 +36,28 @@ export default function TopicDetail() {
         <Pill>{topic.duration} min</Pill>
         <Pill>Viva ready</Pill>
         <Pill>Exam points</Pill>
+        <Pill>Quick revision</Pill>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <SectionCard title="Easy Explanation">
+          <p className="font-semibold text-slate-700 dark:text-slate-300">{topic.easyExplanation}</p>
+        </SectionCard>
+        <SectionCard title="Beginner First Step">
+          <p className="font-semibold text-slate-700 dark:text-slate-300">{topic.beginnerExplanation}</p>
+        </SectionCard>
+        <SectionCard title="Clinical Link">
+          <p className="font-semibold text-slate-700 dark:text-slate-300">{topic.clinicalExample}</p>
+        </SectionCard>
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[1fr_0.8fr]">
         <div className="space-y-5">
           <SectionCard title="Definition">
             <p className="font-semibold text-slate-700 dark:text-slate-300">{topic.definition}</p>
+          </SectionCard>
+          <SectionCard title="Detailed Explanation">
+            <p className="font-semibold text-slate-700 dark:text-slate-300">{topic.detailedExplanation}</p>
           </SectionCard>
           <SectionCard title="Causes">
             <ul className="space-y-2">
@@ -74,6 +90,17 @@ export default function TopicDetail() {
               </a>
             </div>
           </SectionCard>
+          <SectionCard title="Memory Hook">
+            <div className="flex gap-3">
+              <Lightbulb className="mt-1 shrink-0 text-amber-400" />
+              <p className="font-semibold text-slate-700 dark:text-slate-300">{topic.analogy}</p>
+            </div>
+          </SectionCard>
+          <SectionCard title="Important Keywords">
+            <div className="flex flex-wrap gap-2">
+              {topic.keywords.map((item) => <Pill key={item}>{item}</Pill>)}
+            </div>
+          </SectionCard>
           <SectionCard title="Clinical Features">
             <ul className="space-y-2">{topic.clinicalFeatures.map((item) => <li key={item} className="font-bold">- {item}</li>)}</ul>
           </SectionCard>
@@ -100,6 +127,22 @@ export default function TopicDetail() {
         </SectionCard>
       </div>
 
+      <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+        <SectionCard title="Quick Revision Checklist">
+          <ul className="space-y-2">{topic.quickRevision.map((item) => <li key={item} className="rounded-2xl bg-white p-3 font-bold dark:bg-white/10">- {item}</li>)}</ul>
+        </SectionCard>
+        <SectionCard title="High-Yield Table">
+          <div className="overflow-hidden rounded-2xl ring-1 ring-slate-100 dark:ring-white/10">
+            {topic.highYieldTable.map((row) => (
+              <div key={row.label} className="grid gap-2 border-b border-slate-100 bg-white p-4 last:border-0 dark:border-white/10 dark:bg-white/10 sm:grid-cols-[0.35fr_0.65fr]">
+                <p className="font-black text-clinic-700 dark:text-cyan-300">{row.label}</p>
+                <p className="font-semibold text-slate-700 dark:text-slate-300">{row.value}</p>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      </div>
+
       <SectionCard title="MCQs">
         {topic.mcqs.map((mcq) => (
           <div key={mcq.question} className="rounded-2xl bg-white p-4 dark:bg-white/10">
@@ -108,6 +151,7 @@ export default function TopicDetail() {
               {mcq.options.map((option) => <span key={option} className="rounded-xl bg-clinic-50 p-3 font-bold dark:bg-clinic-950">{option}</span>)}
             </div>
             <p className="mt-3 font-black text-emerald-600">Answer: {mcq.answer}</p>
+            {mcq.explanation && <p className="mt-2 flex gap-2 font-semibold text-slate-600 dark:text-slate-300"><Stethoscope className="shrink-0 text-clinic-700 dark:text-cyan-300" size={18} /> {mcq.explanation}</p>}
           </div>
         ))}
       </SectionCard>

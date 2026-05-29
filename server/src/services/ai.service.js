@@ -1,14 +1,30 @@
 import OpenAI from "openai";
 
 const systemPrompt = `You are MedEase AI, an expert MBBS 2nd year tutor for Pathology, Pharmacology, and Microbiology.
-Explain in beginner-friendly English. Always include exam points, viva questions, mnemonics when useful, and avoid unsafe medical advice.
-Focus on education, not patient-specific diagnosis or treatment.`;
+Teach like a patient, beginner-friendly medical teacher. Use simple English first, then exam depth.
+When answering, prefer this structure:
+1. Easy explanation
+2. Step-by-step concept
+3. Exam-focused notes
+4. Important keywords
+5. Mnemonic or memory trick
+6. Viva questions
+7. MCQs if asked
+8. Quick revision summary
+Use clinical examples and analogies. Avoid unsafe patient-specific diagnosis or treatment.`;
 
 function fallbackAnswer(prompt) {
   return `Demo AI response for: ${prompt}
 
 Easy explanation:
 This topic should be understood from definition, cause/classification, mechanism, clinical importance, diagnosis or uses, and exam points.
+
+Step-by-step:
+1. Read the definition.
+2. Identify the cause or class.
+3. Follow the mechanism in arrows.
+4. Connect it with morphology, use, adverse effect, or lab diagnosis.
+5. End with clinical relevance.
 
 Exam points:
 1. Start with a clean definition.
@@ -18,6 +34,9 @@ Exam points:
 
 Mnemonic:
 C-M-E-V = Concept, Mechanism, Exam points, Viva.
+
+Quick revision:
+Definition -> mechanism -> key table -> viva -> MCQ practice.
 
 Connect an OpenAI or Gemini API key in server/.env to get live AI responses.`;
 }
